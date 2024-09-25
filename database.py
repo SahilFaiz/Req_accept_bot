@@ -49,3 +49,7 @@ def all_groups():
     group = groups.find({})
     grps = len(list(group))
     return grps
+        
+def clear_all_users_and_groups():
+    users.delete_many({})  # This will remove all documents in the 'users' collection
+    groups.delete_many({})  # This will remove all documents in the 'groups' collection
