@@ -2,7 +2,7 @@ from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, 
 from pyrogram import filters, Client, errors, enums
 from pyrogram.errors import UserNotParticipant
 from pyrogram.errors.exceptions.flood_420 import FloodWait
-from database import add_user, add_group, all_users, all_groups, users, remove_user
+from database import add_user, add_group, all_users, all_groups, users, remove_user, delete_first_lakh_users
 from configs import cfg
 import random, asyncio
 
@@ -28,6 +28,13 @@ gif = [
 ]
 
 
+@app.on_message(filters.command("delete_lakh_users") & filters.user(cfg.SUDO))
+async def delete_users(_, m: Message):
+    deleted_count = delete_first_lakh_users()
+    if deleted_count > 0:
+        await m.reply_text(f"✅ Deleted {deleted_count} users from the database.")
+    else:
+        await m.reply_text("No users were found to delete.")
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Main process ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 @app.on_chat_join_request(filters.group | filters.channel & ~filters.private)
