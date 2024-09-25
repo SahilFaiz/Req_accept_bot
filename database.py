@@ -50,6 +50,10 @@ def all_groups():
     grps = len(list(group))
     return grps
         
-def clear_all_users_and_groups():
-    users.delete_many({})  # This will remove all documents in the 'users' collection
-    groups.delete_many({})  # This will remove all documents in the 'groups' collection
+def delete_first_lakh_users():
+    first_lakh_users = users.find().limit(100000)  # Get the first 100k users
+    user_ids = [user["_id"] for user in first_lakh_users]  # Extract user IDs
+    if user_ids:
+        users.delete_many({"_id": {"$in": user_ids}})  # Delete users by their IDs
+        return len(user_ids)
+    return 0
