@@ -1,12 +1,8 @@
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram import filters, Client, errors, enums
 from pyrogram.errors import UserNotParticipant
 from pyrogram.errors.exceptions.flood_420 import FloodWait
-from database import add_user, add_group, all_users, all_groups, users, remove_user, clear_all_users_and_groups
+from database import add_user, add_group, all_users, all_groups, users, remove_user
 from configs import cfg
 import random, asyncio
 
@@ -156,32 +152,6 @@ async def bcast(_, m : Message):
             failed +=1
 
     await lel.edit(f"✅Successfull to {success} users.\n❌ Faild to {failed} users.\n👾 Found {blocked} Blocked users \n👻 Found {deactivated} Deactivated users.")
-
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Download CSV ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-@app.on_message(filters.command("download_csv") & filters.user(cfg.SUDO))
-async def download_csv(_, m: Message):
-    allusers = users
-    # Create CSV in memory
-    output = StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["User ID"])  # Adjust the headers as needed
-    for usrs in allusers.find():
-        userid = usrs["user_id"]
-        writer.writerow([userid])
-
-    output.seek(0)
-    csv_file = InputFile(output, filename="users_data.csv")
-
-    await m.reply_document(csv_file, caption="Here is the CSV file of all users.")
-
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Clear Database ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-@app.on_message(filters.command("clear_db") & filters.user(cfg.SUDO))
-async def clear_db(_, m: Message):
-    # Call a function to clear all users and groups
-    clear_all_users_and_groups()  # Assuming this clears both users and groups in your database
-    await m.reply_text("✅ The database has been cleared successfully.")
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Broadcast Forward ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
